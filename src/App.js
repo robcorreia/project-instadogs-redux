@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
@@ -10,8 +10,16 @@ import ProtectedRoute from "./Components/Helper/ProtectedRoute";
 import Photo from "./Components/Photo/Photo";
 import UserProfile from "./Components/User/UserProfile";
 import NotFound from "./Components/NotFound";
+import { useDispatch } from "react-redux";
+import { autoLogin } from "./store/reducers/user";
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(autoLogin())
+  }, [dispatch])
+
   return (
     <div className="App">
       <BrowserRouter>

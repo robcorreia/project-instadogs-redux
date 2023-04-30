@@ -8,11 +8,14 @@ const slice = createAsyncSlice({
 });
 
 export const fetchUser = slice.asyncAction;
-const { resetState: resetUserState } = slice.actions;
+const { resetState: resetUserState, fetchError } = slice.actions;
 
 export const userLogin = (user) => async (dispatch) => {
   const action = await dispatch(fetchToken(user));
-  if (action.payload.token) await dispatch(fetchUser(action.payload.token));
+  if (action.payload.token) {
+    window.localStorage.setItem('token', action.payload.token)
+    await dispatch(fetchUser(action.payload.token));
+  }
 };
 
 export const userLogout = () => async (dispatch) => {
@@ -21,4 +24,11 @@ export const userLogout = () => async (dispatch) => {
   window.localStorage.removeItem("token");
 };
 
+export const autoLogin = () => async (dispatch, getState) => {
+  const { token } = getState();
+  if (token?.data?.token) {
+    const { type } = await dispatch(fetchUser(token.data.token))
+    if (type === fetchError.type) dispatch(userLogout())
+  }
+}
 export default slice.reducer;
