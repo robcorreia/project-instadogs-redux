@@ -5,8 +5,9 @@ import token from "./reducers/token";
 import user from "./reducers/user";
 import feed from "./reducers/feed";
 import ui from "./reducers/ui";
+import photoPost from "./reducers/photoPost";
 
-const reducer = combineReducers({ photo, token, user, feed, ui });
+const reducer = combineReducers({ photo, photoPost, token, user, feed, ui });
 
 const store = configureStore({
   reducer,
